@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.lloydshove.mavenPlayApp</groupId>
-  <artifactId>mavenPlay</artifactId>
+  <groupId>elasticsearch</groupId>
+  <artifactId>elasticsearch-installation</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>mavenPlay</name>
-  <url>http://maven.apache.org</url>
+  <name>elasticsearch-installation</name>
+   <distributionManagement>
+        <repository>
+          <id>thirdparty</id>
+          <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+        </repository>
+    </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>elasticsearch.org</groupId>
@@ -17,7 +22,29 @@
   </dependencies>
   <build>
     <plugins>
-    <plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+<file>${project.build.directory}/elasticsearch-installation-${pom.version}.tar.gz</file>
+                                    <type>tar.gz</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>  
+  <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
@@ -50,7 +77,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptor>src/assembly/bin.xml</descriptor>
-          <finalName>elasticsearch-installer-${pom.version}</finalName>
+          <finalName>elasticsearch-installation-${pom.version}</finalName>
         </configuration>
         <executions>
           <execution>
